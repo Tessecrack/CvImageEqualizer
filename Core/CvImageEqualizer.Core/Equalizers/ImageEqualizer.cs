@@ -10,7 +10,7 @@ namespace CvImageEqualizer.Core.Equalizers
     {
         public EqualizedImageDTO Equalize(string pathToImage)
         {
-            var srcMat = new Mat(pathToImage, Emgu.CV.CvEnum.ImreadModes.Grayscale);
+            var srcMat = new Mat(pathToImage, ImreadModes.Grayscale);
 
             var result = EqualizeImpl(srcMat);
 
@@ -75,7 +75,8 @@ namespace CvImageEqualizer.Core.Equalizers
                             //CvInvoke.Rectangle(maskRoi, rect, new MCvScalar(255), -1);
                             var minAreaRect = CvInvoke.MinAreaRect(contour);
                             angle = minAreaRect.Angle;
-                            CvInvoke.Rectangle(maskRoi, minAreaRect.MinAreaRect(), new MCvScalar(255), -1);
+                            CvInvoke.Rectangle(maskRoi, minAreaRect.MinAreaRect(), 
+                                new MCvScalar(255), -1);
                             break;
                         }
                     }
