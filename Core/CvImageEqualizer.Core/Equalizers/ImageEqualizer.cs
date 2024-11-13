@@ -80,10 +80,8 @@ namespace CvImageEqualizer.Core.Equalizers
                             break;
                         }
                     }
-
                 }
             }
-
             return maskRoi;
         }
     }
