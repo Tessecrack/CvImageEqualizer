@@ -1,6 +1,7 @@
 ﻿using CvImageEqualizer.Core.DTO;
 using Emgu.CV;
-
+using Emgu.CV.CvEnum;
+using System.Drawing;
 namespace CvImageEqualizer.Core.Equalizers
 {
     public class ImageEqualizer
@@ -19,20 +20,21 @@ namespace CvImageEqualizer.Core.Equalizers
             var result = new EqualizedImageDTO();
 
             Mat filteredMat = new Mat();
-            CvInvoke.BilateralFilter(grayMat, filteredMat, 9, 103, 103, Emgu.CV.CvEnum.BorderType.Constant);
+            CvInvoke.BilateralFilter(grayMat, filteredMat, 9, 71, 71,
+                BorderType.Constant);
 
             //Mat cannyMat = new Mat();
             //CvInvoke.Canny(filteredMat, cannyMat, 10, 60);
 
-            var bin = new Mat();
-            CvInvoke.AdaptiveThreshold(filteredMat, bin, 255,
-                Emgu.CV.CvEnum.AdaptiveThresholdType.GaussianC,
-                Emgu.CV.CvEnum.ThresholdType.BinaryInv, 11, 2);
+            var binaryMat = new Mat();
+            CvInvoke.AdaptiveThreshold(filteredMat, binaryMat, 255,
+                AdaptiveThresholdType.GaussianC,
+                ThresholdType.BinaryInv, 19, 2);
 
-            CvInvoke.Imshow("bin", bin);
 
             result.EqualizedImage = grayMat;
             result.FilteredImage = filteredMat;
+            result.BinaryImage = binaryMat;
             result.AngleDeviationDegrees = 0;
             return result;
         }

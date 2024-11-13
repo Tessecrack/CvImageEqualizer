@@ -48,9 +48,11 @@ partial class ImageEqualizerMainForm
         tableLayoutPanelProcessedImages = new TableLayoutPanel();
         groupBoxFilteredImage = new GroupBox();
         pictureBoxFilteredImg = new PictureBox();
-        openFileDialog = new OpenFileDialog();
         groupBoxBinaryImg = new GroupBox();
         pictureBoxBinary = new PictureBox();
+        openFileDialog = new OpenFileDialog();
+        groupBoxExtractedRect = new GroupBox();
+        pictureBox1 = new PictureBox();
         menuStrip.SuspendLayout();
         tableLayoutPanelMain.SuspendLayout();
         tableLayoutPanelImages.SuspendLayout();
@@ -68,6 +70,8 @@ partial class ImageEqualizerMainForm
         ((System.ComponentModel.ISupportInitialize)pictureBoxFilteredImg).BeginInit();
         groupBoxBinaryImg.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)pictureBoxBinary).BeginInit();
+        groupBoxExtractedRect.SuspendLayout();
+        ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
         SuspendLayout();
         // 
         // menuStrip
@@ -281,6 +285,7 @@ partial class ImageEqualizerMainForm
         tableLayoutPanelProcessedImages.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
         tableLayoutPanelProcessedImages.Controls.Add(groupBoxFilteredImage, 0, 0);
         tableLayoutPanelProcessedImages.Controls.Add(groupBoxBinaryImg, 1, 0);
+        tableLayoutPanelProcessedImages.Controls.Add(groupBoxExtractedRect, 0, 1);
         tableLayoutPanelProcessedImages.Dock = DockStyle.Fill;
         tableLayoutPanelProcessedImages.Location = new Point(3, 23);
         tableLayoutPanelProcessedImages.Name = "tableLayoutPanelProcessedImages";
@@ -330,8 +335,31 @@ partial class ImageEqualizerMainForm
         pictureBoxBinary.Location = new Point(3, 23);
         pictureBoxBinary.Name = "pictureBoxBinary";
         pictureBoxBinary.Size = new Size(189, 114);
+        pictureBoxBinary.SizeMode = PictureBoxSizeMode.Zoom;
         pictureBoxBinary.TabIndex = 0;
         pictureBoxBinary.TabStop = false;
+        // 
+        // groupBoxExtractedRect
+        // 
+        groupBoxExtractedRect.Controls.Add(pictureBox1);
+        groupBoxExtractedRect.Dock = DockStyle.Fill;
+        groupBoxExtractedRect.Location = new Point(3, 149);
+        groupBoxExtractedRect.Name = "groupBoxExtractedRect";
+        groupBoxExtractedRect.Size = new Size(194, 140);
+        groupBoxExtractedRect.TabIndex = 2;
+        groupBoxExtractedRect.TabStop = false;
+        groupBoxExtractedRect.Text = "Extracted";
+        // 
+        // pictureBox1
+        // 
+        pictureBox1.BorderStyle = BorderStyle.FixedSingle;
+        pictureBox1.Dock = DockStyle.Fill;
+        pictureBox1.Location = new Point(3, 23);
+        pictureBox1.Name = "pictureBox1";
+        pictureBox1.Size = new Size(188, 114);
+        pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+        pictureBox1.TabIndex = 0;
+        pictureBox1.TabStop = false;
         // 
         // ImageEqualizerMainForm
         // 
@@ -363,6 +391,8 @@ partial class ImageEqualizerMainForm
         ((System.ComponentModel.ISupportInitialize)pictureBoxFilteredImg).EndInit();
         groupBoxBinaryImg.ResumeLayout(false);
         ((System.ComponentModel.ISupportInitialize)pictureBoxBinary).EndInit();
+        groupBoxExtractedRect.ResumeLayout(false);
+        ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
         ResumeLayout(false);
         PerformLayout();
     }
@@ -392,4 +422,6 @@ partial class ImageEqualizerMainForm
     private PictureBox pictureBoxFilteredImg;
     private GroupBox groupBoxBinaryImg;
     private PictureBox pictureBoxBinary;
+    private GroupBox groupBoxExtractedRect;
+    private PictureBox pictureBox1;
 }

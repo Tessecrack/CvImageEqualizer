@@ -9,11 +9,16 @@ namespace CvImageEqualizer.Core.DTO
         /// </summary>
         public Mat EqualizedImage { get; set; }
 
-
         /// <summary>
         /// Фильтрованное изображение.
         /// </summary>
         public Mat FilteredImage { get; set; }
+
+
+        /// <summary>
+        /// Бинарное изображение.
+        /// </summary>
+        public Mat BinaryImage { get; set; }
 
         /// <summary>
         /// Угол отклонения исходного изображения.
