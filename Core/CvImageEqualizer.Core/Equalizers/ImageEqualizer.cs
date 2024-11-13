@@ -33,25 +33,25 @@ namespace CvImageEqualizer.Core.Equalizers
                 AdaptiveThresholdType.GaussianC,
                 ThresholdType.Binary, 19, 2);
 
-            var contouredMat = GetContouredMat(binaryMat);
+            var contouredMat = GetContouredMat(binaryMat, out float angle);
+            var extractedRoi = new Mat();
+            CvInvoke.BitwiseAnd(filteredMat, contouredMat, extractedRoi);
 
             result.EqualizedImage = grayMat;
             result.FilteredImage = filteredMat;
             result.BinaryImage = binaryMat;
-            result.ExtractedROI = contouredMat;
-            result.AngleDeviationDegrees = 0;
+            result.ExtractedROI = extractedRoi;
+            result.AngleDeviationDegrees = angle;
             return result;
         }
 
-        private Mat GetContouredMat(Mat srcMat)
+        private Mat GetContouredMat(Mat srcMat, out float angle)
         {
-            Mat contouredMat = new Mat();
-            srcMat.CopyTo(contouredMat);
-
-            Mat hierarchy = new Mat();
-            CvInvoke.CvtColor(contouredMat, contouredMat, ColorConversion.Gray2Bgr);
+            Mat maskRoi = Mat.Zeros(srcMat.Rows, srcMat.Cols, DepthType.Cv8U, 1);
+            angle = 0;
             using (VectorOfVectorOfPoint contours = new VectorOfVectorOfPoint())
             {
+                Mat hierarchy = new Mat();
                 CvInvoke.FindContours(srcMat, contours, hierarchy,
                     RetrType.Ccomp,
                     ChainApproxMethod.ChainApproxSimple);
@@ -62,17 +62,28 @@ namespace CvImageEqualizer.Core.Equalizers
                     Rectangle rect = CvInvoke.BoundingRectangle(contour);
                     var width = rect.Right - rect.Left;
                     var height = rect.Bottom - rect.Top;
+                    if (rect.Left == 0 || rect.Right == srcMat.Width
+                        || rect.Top == 0 || rect.Bottom == srcMat.Height)
+                    {
+                        continue;
+                    }
                     if (center.X > rect.Left && center.X < rect.Right
                         && center.Y > rect.Top && center.Y < rect.Bottom)
                     {
                         if (width * height > 3000)
-                            CvInvoke.Rectangle(contouredMat, rect, new MCvScalar(255, 0, 0));
+                        {
+                            //CvInvoke.Rectangle(maskRoi, rect, new MCvScalar(255), -1);
+                            var minAreaRect = CvInvoke.MinAreaRect(contour);
+                            angle = minAreaRect.Angle;
+                            CvInvoke.Rectangle(maskRoi, minAreaRect.MinAreaRect(), new MCvScalar(255), -1);
+                            break;
+                        }
                     }
 
                 }
             }
 
-            return contouredMat;
+            return maskRoi;
         }
     }
 }

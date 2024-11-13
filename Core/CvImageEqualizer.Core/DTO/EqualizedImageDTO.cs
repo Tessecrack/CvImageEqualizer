@@ -28,6 +28,6 @@ namespace CvImageEqualizer.Core.DTO
         /// <summary>
         /// Угол отклонения исходного изображения.
         /// </summary>
-        public int AngleDeviationDegrees { get; set; }
+        public float AngleDeviationDegrees { get; set; }
     }
 }
