@@ -27,7 +27,7 @@ public partial class ImageEqualizerMainForm : Form
                 pictureBoxEqualizedImage.Image     = equalizedImageData.EqualizedImage.ToBitmap();
                 pictureBoxFilteredImg.Image        = equalizedImageData.FilteredImage.ToBitmap();
                 pictureBoxBinary.Image = equalizedImageData.BinaryImage.ToBitmap();
-
+                pictureBoxROI.Image = equalizedImageData.ExtractedROI.ToBitmap();
                 lblAngleDeviationDegreesValue.Text = equalizedImageData.AngleDeviationDegrees.ToString();
             }
         }

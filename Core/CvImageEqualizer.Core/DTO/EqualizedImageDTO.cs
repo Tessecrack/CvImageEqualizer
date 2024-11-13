@@ -21,6 +21,11 @@ namespace CvImageEqualizer.Core.DTO
         public Mat BinaryImage { get; set; }
 
         /// <summary>
+        /// Выделенная область интереса (прямоугольник).
+        /// </summary>
+        public Mat ExtractedROI { get; set; }
+
+        /// <summary>
         /// Угол отклонения исходного изображения.
         /// </summary>
         public int AngleDeviationDegrees { get; set; }
