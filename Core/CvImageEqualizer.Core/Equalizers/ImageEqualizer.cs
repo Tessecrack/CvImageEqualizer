@@ -10,7 +10,7 @@ namespace CvImageEqualizer.Core.Equalizers
     {
         private Mat _cachedMat;
 
-        private int _sizeRoi = 3000;
+        private int _sizeRoi = 2000;
 
         public EqualizedImageDTO Equalize(string pathToImage)
         {
@@ -27,14 +27,16 @@ namespace CvImageEqualizer.Core.Equalizers
             var result = new EqualizedImageDTO();
 
             Mat filteredMat = new Mat();
-            CvInvoke.BilateralFilter(grayMat, filteredMat, 9, 71, 71,
+            CvInvoke.BilateralFilter(grayMat, filteredMat, 9, 23, 23,
                 BorderType.Constant);
 
             var binaryMat = new Mat();
             CvInvoke.AdaptiveThreshold(filteredMat, binaryMat, 255,
                 AdaptiveThresholdType.GaussianC,
                 ThresholdType.Binary, 19, 2);
-
+            var erodeCore = CvInvoke.GetStructuringElement(ElementShape.Rectangle, new Size(3, 3), new Point(-1, -1));
+            CvInvoke.Erode(binaryMat, binaryMat, erodeCore, new Point(-1, -1), 1, BorderType.Constant
+                , new MCvScalar(255));
             var rotatedMat = RotateMat(binaryMat, _cachedMat, 
                 out Mat roi, 
                 out float angle);
