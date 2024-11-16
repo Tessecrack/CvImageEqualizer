@@ -8,20 +8,41 @@ namespace CvImageEqualizer.Core.Equalizers
 {
     public class ImageEqualizer
     {
+        /// <summary>
+        /// Кэшированное исходное изображение для применения ротации.
+        /// </summary>
         private Mat _cachedMat;
 
-        private int _sizeRoi = 2000;
+        /// <summary>
+        /// Минимальная площадь области интереса для выделения контура.
+        /// </summary>
+        private int _minAreaRoi = 2000;
 
+        /// <summary>
+        /// Размер ядра эрозии
+        /// </summary>
+        private int _sizeErosionCore = 2;
+
+        /// <summary>
+        /// Метод выравнивания ихсодного изображения.
+        /// </summary>
+        /// <param name="pathToImage">Путь к исходному изображению.</param>
+        /// <returns>Объект, содержащий выровненное, фильтрованное, бинарное изображения, область интереса и угол отклонения.</returns>
         public EqualizedImageDTO Equalize(string pathToImage)
         {
             _cachedMat = new Mat(pathToImage, ImreadModes.Color);
-            var srcMat = new Mat(pathToImage, ImreadModes.Grayscale);
+            var srcMat = new Mat();
 
-            var result = EqualizeImpl(srcMat);
+            CvInvoke.CvtColor(_cachedMat, srcMat, ColorConversion.Bgr2Gray);
 
-            return result;
+            return EqualizeImpl(srcMat);
         }
 
+        /// <summary>
+        /// Метод выравнивания исходного изображения.
+        /// </summary>
+        /// <param name="grayMat">Изображение в оттенках серого.</param>
+        /// <returns>Объект, содержащий выровненное, фильтрованное, бинарное изображения, область интереса и угол отклонения.</returns>
         private EqualizedImageDTO EqualizeImpl(Mat grayMat)
         {
             var result = new EqualizedImageDTO();
@@ -30,55 +51,86 @@ namespace CvImageEqualizer.Core.Equalizers
             CvInvoke.BilateralFilter(grayMat, filteredMat, 9, 23, 23,
                 BorderType.Constant);
 
-            var binaryMat = new Mat();
-            CvInvoke.AdaptiveThreshold(filteredMat, binaryMat, 255,
-                AdaptiveThresholdType.GaussianC,
-                ThresholdType.Binary, 19, 2);
-            var erodeCore = CvInvoke.GetStructuringElement(ElementShape.Rectangle, new Size(3, 3), new Point(-1, -1));
-            CvInvoke.Erode(binaryMat, binaryMat, erodeCore, new Point(-1, -1), 1, BorderType.Constant
-                , new MCvScalar(255));
-            var rotatedMat = RotateMat(binaryMat, _cachedMat, 
-                out Mat roi, 
-                out float angle);
+            var binaryMat = GetBinaryWithErosion(filteredMat, _sizeErosionCore);
+
+            // получение прямоугольника (по контуру), по которому будет определен угол поворота
+            var minAreaRect = ExtracMinAreaRect(binaryMat);
+
+            var rotatedMat = ApplyRotation(_cachedMat, minAreaRect, out Mat roi, out float optimalAngle);
+
             var extractedRoi = new Mat();
+
             CvInvoke.BitwiseAnd(grayMat, roi, extractedRoi);
 
             result.EqualizedImage = rotatedMat;
             result.FilteredImage = filteredMat;
             result.BinaryImage = binaryMat;
             result.ExtractedROI = extractedRoi;
-            result.AngleDeviationDegrees = angle;
+            result.AngleDeviationDegrees = optimalAngle;
             return result;
         }
 
-        private Mat RotateMat(Mat binaryMat, Mat srcMat, out Mat maskRoi, out float angle)
+        /// <summary>
+        /// Метод используется для применения адаптивной бинаризации и эрозии к srcMat.
+        /// </summary>
+        /// <param name="srcMat">Исходное изображение.</param>
+        /// <param name="sizeErode">Размер ядра эрозии</param>
+        /// <returns>Бинарное изображение с эрозией.</returns>
+        private Mat GetBinaryWithErosion(Mat srcMat, int sizeErode)
         {
-            maskRoi = Mat.Zeros(binaryMat.Rows, binaryMat.Cols, DepthType.Cv8U, 1);
-            var rotatedResult = new Mat();
+            var binaryMat = new Mat();
+            CvInvoke.AdaptiveThreshold(srcMat, binaryMat, 255,
+                AdaptiveThresholdType.GaussianC,
+                ThresholdType.Binary, 19, 2);
+
+            var erosionCore = CvInvoke.GetStructuringElement(ElementShape.Rectangle, 
+                new Size(sizeErode, sizeErode), 
+                new Point(-1, -1));
+
+            CvInvoke.Erode(binaryMat, binaryMat, erosionCore, new Point(-1, -1), 1, BorderType.Constant
+                , new MCvScalar(255));
+
+            return binaryMat;
+        }
+
+        /// <summary>
+        /// Извлечение повернутого прямоугольника над областью интереса.
+        /// </summary>
+        /// <param name="binaryMat">Бинарное изображение.</param>
+        /// <returns>Область интереса в binaryMat в прямоугольнике.</returns>
+        private RotatedRect ExtracMinAreaRect(Mat binaryMat)
+        {
             var minAreaRect = new RotatedRect();
-            angle = 0;
             using (VectorOfVectorOfPoint contours = new VectorOfVectorOfPoint())
             {
                 Mat hierarchy = new Mat();
                 CvInvoke.FindContours(binaryMat, contours, hierarchy,
                     RetrType.Ccomp,
                     ChainApproxMethod.ChainApproxSimple);
+
                 Point center = new Point(binaryMat.Cols / 2, binaryMat.Rows / 2);
+
                 for (int i = 0; i < contours.Size; ++i)
                 {
                     var contour = contours[i];
                     Rectangle rect = CvInvoke.BoundingRectangle(contour);
                     var width = rect.Right - rect.Left;
                     var height = rect.Bottom - rect.Top;
+
+                    // обход границ изображения
                     if (rect.Left == 0 || rect.Right == binaryMat.Width
                         || rect.Top == 0 || rect.Bottom == binaryMat.Height)
                     {
                         continue;
                     }
+
+                    // контур считается областью интереса, если пересекает центр изображения
                     if (center.X > rect.Left && center.X < rect.Right
                         && center.Y > rect.Top && center.Y < rect.Bottom)
                     {
-                        if (width * height > _sizeRoi)
+                        // определение области интереса по размеру (площади прямоугольника) для отсечения
+                        // совсем мелких контуров
+                        if (width * height > _minAreaRoi)
                         {
                             minAreaRect = CvInvoke.MinAreaRect(contour);
                             break;
@@ -86,33 +138,56 @@ namespace CvImageEqualizer.Core.Equalizers
                     }
                 }
             }
-            angle = GetOptimalAngle(minAreaRect.Angle);
-            CvInvoke.Rectangle(maskRoi, minAreaRect.MinAreaRect(), new MCvScalar(255), -1);
-            rotatedResult = ApplyRotation(_cachedMat, minAreaRect, angle);
-            return rotatedResult;
+            return minAreaRect;
         }
 
-        private Mat ApplyRotation(Mat srcMat, RotatedRect minAreaRect, float angle)
+        /// <summary>
+        /// Применение ротации к srcMat по контуру minAreaRect.
+        /// </summary>
+        /// <param name="srcMat">Исходное изображение.</param>
+        /// <param name="minAreaRect">Повернутый прямоугольник, содержащий область интереса.</param>
+        /// <param name="maskRoi">(Выходной) Область интереса, наложенная на черный фон.</param>
+        /// <param name="optimalAngle">(Выходной) Угол спроецированный на первую четверть.</param>
+        /// <returns>Повернутое изображение.</returns>
+        private Mat ApplyRotation(Mat srcMat, RotatedRect minAreaRect,
+            out Mat maskRoi,
+            out float optimalAngle)
         {
+            maskRoi = Mat.Zeros(srcMat.Rows, srcMat.Cols, DepthType.Cv8U, 1);
+
+            // проецируем угол на первую четверть
+            optimalAngle = ConvertAngleToFirstQuarter(minAreaRect.Angle);
+
+            CvInvoke.Rectangle(maskRoi, minAreaRect.MinAreaRect(), new MCvScalar(255), -1);
+
             var rotatedResult = new Mat();
-            var rotationMatrix = new Mat(new Size(2, 3), DepthType.Cv32F, 1);
-            CvInvoke.GetRotationMatrix2D(minAreaRect.Center, angle, 1.0, rotationMatrix);
+            var rotationMatrix = new Mat(new Size(3, 3), DepthType.Cv32F, 1);
+
+            CvInvoke.GetRotationMatrix2D(minAreaRect.Center, optimalAngle, 1.0, rotationMatrix);
             CvInvoke.WarpAffine(srcMat, rotatedResult, rotationMatrix, srcMat.Size,
                 Inter.Cubic, Warp.Default, BorderType.Replicate);
 
             return rotatedResult;
         }
 
-        private float GetOptimalAngle(float srcAngle)
+        /// <summary>
+        /// Метод проецирования угла на первую четверть.
+        /// </summary>
+        /// <param name="srcAngle">Исходный угол.</param>
+        /// <returns>Угол, спроецированный на первую четверть.</returns>
+        private float ConvertAngleToFirstQuarter(float srcAngle)
         {
             int roundAngle = (int)srcAngle;
             var resultAngle = srcAngle;
             if (roundAngle == 90 || roundAngle == 180 || roundAngle == 270)
             {
+                // не учитываем флипы
                 return 0;
             }
             float rightAngle = 90;
-            float range = 10;
+            float range = 45;
+
+            // условный перевод угла в первую четверть
             if (rightAngle + range >= roundAngle && rightAngle - range <= roundAngle)
             {
                 resultAngle = srcAngle - rightAngle;
