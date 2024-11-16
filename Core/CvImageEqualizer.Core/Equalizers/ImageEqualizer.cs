@@ -124,7 +124,7 @@ namespace CvImageEqualizer.Core.Equalizers
                         continue;
                     }
 
-                    // контур считается областью интереса, если пересекает центр изображения
+                    // контур считается областью интереса, если включает в себя центр исходного изображения
                     if (center.X > rect.Left && center.X < rect.Right
                         && center.Y > rect.Top && center.Y < rect.Bottom)
                     {
