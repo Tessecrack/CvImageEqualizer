@@ -35,7 +35,7 @@ public partial class ImageEqualizerMainForm : Form
                 pictureBoxRemovedHighlightsImg.Image = equalizedImageData
                     .RemovedHighlightsImage.ToBitmap();
 
-                lblAngleDeviationDegreesValue.Text = equalizedImageData.AngleDeviationDegrees.ToString();
+                lblAngleDeviationDegreesValue.Text = equalizedImageData.AngleDeviationDegrees.ToString("0.000");
             }
         }
         catch (Exception ex)
