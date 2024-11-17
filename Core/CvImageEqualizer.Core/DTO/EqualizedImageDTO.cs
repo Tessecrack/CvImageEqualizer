@@ -21,7 +21,7 @@ namespace CvImageEqualizer.Core.DTO
         public Mat BinaryImage { get; set; }
 
         /// <summary>
-        /// Выделенная область интереса (прямоугольник).
+        /// Выделенная область интереса (прямоугольник). Нужен только для отображения.
         /// </summary>
         public Mat ExtractedROI { get; set; }
 

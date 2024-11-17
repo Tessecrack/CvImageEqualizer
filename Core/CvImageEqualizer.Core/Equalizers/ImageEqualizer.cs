@@ -16,12 +16,12 @@ namespace CvImageEqualizer.Core.Equalizers
         /// <summary>
         /// Минимальная площадь области интереса для выделения контура.
         /// </summary>
-        private int _minAreaRoi = 2000;
+        private readonly int _minAreaRoi = 2000;
 
         /// <summary>
         /// Размер ядра эрозии
         /// </summary>
-        private int _sizeErosionCore = 2;
+        private readonly int _sizeErosionCore = 2;
 
         /// <summary>
         /// Метод выравнивания ихсодного изображения.
@@ -58,7 +58,9 @@ namespace CvImageEqualizer.Core.Equalizers
 
             // проецируем угол на первую четверть
             var angleInFirstQuarter = ConvertAngleToFirstQuarter(minAreaRect.Angle);
-            var rotatedMat = ApplyRotation(_cachedMat, minAreaRect, angleInFirstQuarter, out Mat roi);
+
+            // поворот исходного изображения относительно цента области интереса minAreaRect
+            var rotatedMat = ApplyRotationByRect(_cachedMat, minAreaRect, angleInFirstQuarter, out Mat roi);
 
             var extractedRoi = new Mat();
 
@@ -144,14 +146,14 @@ namespace CvImageEqualizer.Core.Equalizers
         }
 
         /// <summary>
-        /// Применение ротации к srcMat по контуру minAreaRect.
+        /// Применение ротации к srcMat по контуру minAreaRect на угол angleInFirstQuarter.
         /// </summary>
         /// <param name="srcMat">Исходное изображение.</param>
         /// <param name="minAreaRect">Повернутый прямоугольник, содержащий область интереса.</param>
         /// <param name="maskRoi">(Выходной) Область интереса, наложенная на черный фон.</param>
         /// <param name="optimalAngle">(Выходной) Угол спроецированный на первую четверть.</param>
         /// <returns>Повернутое изображение.</returns>
-        private Mat ApplyRotation(Mat srcMat, RotatedRect minAreaRect, float angleInFirstQuarter,
+        private Mat ApplyRotationByRect(Mat srcMat, RotatedRect minAreaRect, float angleInFirstQuarter,
             out Mat maskRoi)
         {
             maskRoi = Mat.Zeros(srcMat.Rows, srcMat.Cols, DepthType.Cv8U, 1);
@@ -175,6 +177,7 @@ namespace CvImageEqualizer.Core.Equalizers
         /// <returns>Угол, спроецированный на первую четверть.</returns>
         private float ConvertAngleToFirstQuarter(float srcAngle)
         {
+            // текущая четверть угла
             int currentQuarter = (int)srcAngle / 90;
             float convertedAngleToFirstQuarter = srcAngle - currentQuarter * 90;
             // проверка на переворот изображения относительно 90, 180, 270 градусов
@@ -185,8 +188,8 @@ namespace CvImageEqualizer.Core.Equalizers
             }
 
             // маппинг угла на ближайшую ось 45 градусов
-            int approxValueToNearesAxis = (int)Math.Round(convertedAngleToFirstQuarter / 45f);
-            float resultAngle = srcAngle - approxValueToNearesAxis * 45;
+            int approxValueToNearestAxis = (int)Math.Round(convertedAngleToFirstQuarter / 45f);
+            float resultAngle = srcAngle - approxValueToNearestAxis * 45;
 
             // обходим флипы
             if (Math.Abs((int)resultAngle) == 90)
