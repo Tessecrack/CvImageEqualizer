@@ -185,7 +185,7 @@ namespace CvImageEqualizer.Core.Equalizers
             }
 
             // маппинг угла на ближайшую ось 45 градусов
-            float approxValueToNearesAxis = (int)Math.Round(convertedAngleToFirstQuarter / 45f);
+            int approxValueToNearesAxis = (int)Math.Round(convertedAngleToFirstQuarter / 45f);
             float resultAngle = srcAngle - approxValueToNearesAxis * 45;
 
             // обходим флипы
