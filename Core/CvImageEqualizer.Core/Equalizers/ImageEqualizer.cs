@@ -16,7 +16,7 @@ namespace CvImageEqualizer.Core.Equalizers
         /// <summary>
         /// Минимальная площадь области интереса для выделения контура.
         /// </summary>
-        private readonly int _minAreaRoi = 2000;
+        private readonly int _minAreaRoi = 500;
 
         /// <summary>
         /// Размер ядра эрозии
