@@ -175,17 +175,26 @@ namespace CvImageEqualizer.Core.Equalizers
         /// <returns>Угол, спроецированный на первую четверть.</returns>
         private float ConvertAngleToFirstQuarter(float srcAngle)
         {
-            int roundAngle = (int)srcAngle;
-            int currentQuarter = roundAngle / 45;
+            int currentQuarter = (int)srcAngle / 90;
             float convertedAngleToFirstQuarter = srcAngle - currentQuarter * 90;
-
             // проверка на переворот изображения относительно 90, 180, 270 градусов
             // ("флип" изображения не нужен)
             if (Math.Abs((int)convertedAngleToFirstQuarter) == 90)
             {
                 return 0;
             }
-            return convertedAngleToFirstQuarter;
+
+            // маппинг угла на ближайшую ось 45 градусов
+            float approxValueToNearesAxis = (int)Math.Round(convertedAngleToFirstQuarter / 45f);
+            float resultAngle = srcAngle - approxValueToNearesAxis * 45;
+
+            // обходим флипы
+            if (Math.Abs((int)resultAngle) == 90)
+            {
+                return 0;
+            }
+
+            return resultAngle;
         }
     }
 }
