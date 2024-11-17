@@ -24,10 +24,17 @@ public partial class ImageEqualizerMainForm : Form
                 pictureBoxSourceImage.Image = new Bitmap(openFileDialog.FileName);
                 var equalizedImageData = _imageEqualizer.Equalize(openFileDialog.FileName);
 
-                pictureBoxEqualizedImage.Image     = equalizedImageData.EqualizedImage.ToBitmap();
-                pictureBoxFilteredImg.Image        = equalizedImageData.FilteredImage.ToBitmap();
+                pictureBoxEqualizedImage.Image = equalizedImageData.EqualizedImage.ToBitmap();
+
+                pictureBoxFilteredImg.Image = equalizedImageData.FilteredImage.ToBitmap();
+
                 pictureBoxBinary.Image = equalizedImageData.BinaryImage.ToBitmap();
+
                 pictureBoxROI.Image = equalizedImageData.ExtractedROI.ToBitmap();
+
+                pictureBoxRemovedHighlightsImg.Image = equalizedImageData
+                    .RemovedHighlightsImage.ToBitmap();
+
                 lblAngleDeviationDegreesValue.Text = equalizedImageData.AngleDeviationDegrees.ToString();
             }
         }

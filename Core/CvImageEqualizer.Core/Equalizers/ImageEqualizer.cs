@@ -51,7 +51,9 @@ namespace CvImageEqualizer.Core.Equalizers
             CvInvoke.BilateralFilter(grayMat, filteredMat, 9, 23, 23,
                 BorderType.Constant);
 
-            var binaryMat = GetBinaryWithErosion(filteredMat, _sizeErosionCore);
+            var removedHighlights = RemoveHighlights(filteredMat);
+
+            var binaryMat = GetBinaryWithErosion(removedHighlights, _sizeErosionCore);
 
             // получение прямоугольника (по контуру), по которому будет определен угол поворота
             var minAreaRect = ExtracMinAreaRect(binaryMat);
@@ -70,6 +72,7 @@ namespace CvImageEqualizer.Core.Equalizers
             result.FilteredImage = filteredMat;
             result.BinaryImage = binaryMat;
             result.ExtractedROI = extractedRoi;
+            result.RemovedHighlightsImage = removedHighlights;
             result.AngleDeviationDegrees = angleInFirstQuarter;
             return result;
         }
@@ -93,6 +96,11 @@ namespace CvImageEqualizer.Core.Equalizers
 
             CvInvoke.Erode(binaryMat, binaryMat, erosionCore, new Point(-1, -1), 1, BorderType.Constant
                 , new MCvScalar(255));
+
+            Mat b = new Mat();
+            CvInvoke.Threshold(srcMat, b, 20, 255, ThresholdType.Otsu);
+
+            CvInvoke.BitwiseAnd(b, binaryMat, binaryMat);
 
             return binaryMat;
         }
@@ -198,6 +206,33 @@ namespace CvImageEqualizer.Core.Equalizers
             }
 
             return resultAngle;
+        }
+
+        /// <summary>
+        /// Удаление засветов.
+        /// </summary>
+        /// <param name="srcMat">Изображение с блюром в оттенках серого</param>
+        /// <returns>Изображение без засветов.</returns>
+        private Mat RemoveHighlights(Mat srcMat)
+        {
+            Mat binaryMat = new Mat();
+
+            CvInvoke.Threshold(srcMat, binaryMat, 250, 255, ThresholdType.Binary);
+
+            Mat dilateCore = CvInvoke.GetStructuringElement(ElementShape.Rectangle,
+                new Size(7, 7), new Point(-1, -1));
+
+            Mat dilatedMat = new Mat();
+            CvInvoke.Dilate(binaryMat, dilatedMat, dilateCore, new Point(-1, -1), 1, BorderType.Constant,
+                new MCvScalar(255));
+
+            Mat invertedMat = new Mat();
+            CvInvoke.BitwiseNot(dilatedMat, invertedMat);
+
+            Mat mult = new Mat();
+            CvInvoke.BitwiseAnd(srcMat, invertedMat, mult);
+
+            return mult;
         }
     }
 }

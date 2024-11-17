@@ -26,6 +26,11 @@ namespace CvImageEqualizer.Core.DTO
         public Mat ExtractedROI { get; set; }
 
         /// <summary>
+        /// Изображение с удаленными засветами.
+        /// </summary>
+        public Mat RemovedHighlightsImage { get; set; }
+
+        /// <summary>
         /// Угол отклонения исходного изображения.
         /// </summary>
         public float AngleDeviationDegrees { get; set; }

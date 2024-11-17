@@ -53,6 +53,8 @@ partial class ImageEqualizerMainForm
         groupBoxExtractedRect = new GroupBox();
         pictureBoxROI = new PictureBox();
         openFileDialog = new OpenFileDialog();
+        groupBoxRemovedHighlights = new GroupBox();
+        pictureBoxRemovedHighlightsImg = new PictureBox();
         menuStrip.SuspendLayout();
         tableLayoutPanelMain.SuspendLayout();
         tableLayoutPanelImages.SuspendLayout();
@@ -72,6 +74,8 @@ partial class ImageEqualizerMainForm
         ((System.ComponentModel.ISupportInitialize)pictureBoxBinary).BeginInit();
         groupBoxExtractedRect.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)pictureBoxROI).BeginInit();
+        groupBoxRemovedHighlights.SuspendLayout();
+        ((System.ComponentModel.ISupportInitialize)pictureBoxRemovedHighlightsImg).BeginInit();
         SuspendLayout();
         // 
         // menuStrip
@@ -286,6 +290,7 @@ partial class ImageEqualizerMainForm
         tableLayoutPanelProcessedImages.Controls.Add(groupBoxFilteredImage, 0, 0);
         tableLayoutPanelProcessedImages.Controls.Add(groupBoxBinaryImg, 1, 0);
         tableLayoutPanelProcessedImages.Controls.Add(groupBoxExtractedRect, 0, 1);
+        tableLayoutPanelProcessedImages.Controls.Add(groupBoxRemovedHighlights, 1, 1);
         tableLayoutPanelProcessedImages.Dock = DockStyle.Fill;
         tableLayoutPanelProcessedImages.Location = new Point(3, 23);
         tableLayoutPanelProcessedImages.Name = "tableLayoutPanelProcessedImages";
@@ -361,6 +366,28 @@ partial class ImageEqualizerMainForm
         pictureBoxROI.TabIndex = 0;
         pictureBoxROI.TabStop = false;
         // 
+        // groupBoxRemovedHighlights
+        // 
+        groupBoxRemovedHighlights.Controls.Add(pictureBoxRemovedHighlightsImg);
+        groupBoxRemovedHighlights.Dock = DockStyle.Fill;
+        groupBoxRemovedHighlights.Location = new Point(279, 178);
+        groupBoxRemovedHighlights.Name = "groupBoxRemovedHighlights";
+        groupBoxRemovedHighlights.Size = new Size(271, 170);
+        groupBoxRemovedHighlights.TabIndex = 3;
+        groupBoxRemovedHighlights.TabStop = false;
+        groupBoxRemovedHighlights.Text = "Removed highlights";
+        // 
+        // pictureBoxRemovedHighlightsImg
+        // 
+        pictureBoxRemovedHighlightsImg.BorderStyle = BorderStyle.FixedSingle;
+        pictureBoxRemovedHighlightsImg.Dock = DockStyle.Fill;
+        pictureBoxRemovedHighlightsImg.Location = new Point(3, 23);
+        pictureBoxRemovedHighlightsImg.Name = "pictureBoxRemovedHighlightsImg";
+        pictureBoxRemovedHighlightsImg.Size = new Size(265, 144);
+        pictureBoxRemovedHighlightsImg.SizeMode = PictureBoxSizeMode.Zoom;
+        pictureBoxRemovedHighlightsImg.TabIndex = 0;
+        pictureBoxRemovedHighlightsImg.TabStop = false;
+        // 
         // ImageEqualizerMainForm
         // 
         AutoScaleDimensions = new SizeF(8F, 20F);
@@ -393,6 +420,8 @@ partial class ImageEqualizerMainForm
         ((System.ComponentModel.ISupportInitialize)pictureBoxBinary).EndInit();
         groupBoxExtractedRect.ResumeLayout(false);
         ((System.ComponentModel.ISupportInitialize)pictureBoxROI).EndInit();
+        groupBoxRemovedHighlights.ResumeLayout(false);
+        ((System.ComponentModel.ISupportInitialize)pictureBoxRemovedHighlightsImg).EndInit();
         ResumeLayout(false);
         PerformLayout();
     }
@@ -424,4 +453,6 @@ partial class ImageEqualizerMainForm
     private PictureBox pictureBoxBinary;
     private GroupBox groupBoxExtractedRect;
     private PictureBox pictureBoxROI;
+    private GroupBox groupBoxRemovedHighlights;
+    private PictureBox pictureBoxRemovedHighlightsImg;
 }
