@@ -80,7 +80,7 @@ partial class ImageEqualizerMainForm
         menuStrip.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem });
         menuStrip.Location = new Point(0, 0);
         menuStrip.Name = "menuStrip";
-        menuStrip.Size = new Size(849, 28);
+        menuStrip.Size = new Size(1153, 28);
         menuStrip.TabIndex = 0;
         menuStrip.Text = "menuStrip1";
         // 
@@ -111,7 +111,7 @@ partial class ImageEqualizerMainForm
         tableLayoutPanelMain.RowCount = 1;
         tableLayoutPanelMain.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
         tableLayoutPanelMain.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-        tableLayoutPanelMain.Size = new Size(849, 526);
+        tableLayoutPanelMain.Size = new Size(1153, 585);
         tableLayoutPanelMain.TabIndex = 1;
         // 
         // tableLayoutPanelImages
@@ -127,7 +127,7 @@ partial class ImageEqualizerMainForm
         tableLayoutPanelImages.RowCount = 2;
         tableLayoutPanelImages.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
         tableLayoutPanelImages.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-        tableLayoutPanelImages.Size = new Size(418, 520);
+        tableLayoutPanelImages.Size = new Size(570, 579);
         tableLayoutPanelImages.TabIndex = 0;
         // 
         // groupBoxSourceImage
@@ -136,7 +136,7 @@ partial class ImageEqualizerMainForm
         groupBoxSourceImage.Dock = DockStyle.Fill;
         groupBoxSourceImage.Location = new Point(3, 3);
         groupBoxSourceImage.Name = "groupBoxSourceImage";
-        groupBoxSourceImage.Size = new Size(412, 254);
+        groupBoxSourceImage.Size = new Size(564, 283);
         groupBoxSourceImage.TabIndex = 0;
         groupBoxSourceImage.TabStop = false;
         groupBoxSourceImage.Text = "Source image";
@@ -147,7 +147,7 @@ partial class ImageEqualizerMainForm
         pictureBoxSourceImage.Dock = DockStyle.Fill;
         pictureBoxSourceImage.Location = new Point(3, 23);
         pictureBoxSourceImage.Name = "pictureBoxSourceImage";
-        pictureBoxSourceImage.Size = new Size(406, 228);
+        pictureBoxSourceImage.Size = new Size(558, 257);
         pictureBoxSourceImage.SizeMode = PictureBoxSizeMode.Zoom;
         pictureBoxSourceImage.TabIndex = 0;
         pictureBoxSourceImage.TabStop = false;
@@ -156,9 +156,9 @@ partial class ImageEqualizerMainForm
         // 
         groupBoxEqualizedImage.Controls.Add(pictureBoxEqualizedImage);
         groupBoxEqualizedImage.Dock = DockStyle.Fill;
-        groupBoxEqualizedImage.Location = new Point(3, 263);
+        groupBoxEqualizedImage.Location = new Point(3, 292);
         groupBoxEqualizedImage.Name = "groupBoxEqualizedImage";
-        groupBoxEqualizedImage.Size = new Size(412, 254);
+        groupBoxEqualizedImage.Size = new Size(564, 284);
         groupBoxEqualizedImage.TabIndex = 1;
         groupBoxEqualizedImage.TabStop = false;
         groupBoxEqualizedImage.Text = "Equalized image";
@@ -169,7 +169,7 @@ partial class ImageEqualizerMainForm
         pictureBoxEqualizedImage.Dock = DockStyle.Fill;
         pictureBoxEqualizedImage.Location = new Point(3, 23);
         pictureBoxEqualizedImage.Name = "pictureBoxEqualizedImage";
-        pictureBoxEqualizedImage.Size = new Size(406, 228);
+        pictureBoxEqualizedImage.Size = new Size(558, 258);
         pictureBoxEqualizedImage.SizeMode = PictureBoxSizeMode.Zoom;
         pictureBoxEqualizedImage.TabIndex = 0;
         pictureBoxEqualizedImage.TabStop = false;
@@ -182,18 +182,18 @@ partial class ImageEqualizerMainForm
         tableLayoutPanelControl.Controls.Add(btnClose, 0, 1);
         tableLayoutPanelControl.Controls.Add(tableLayoutPanelIntermediateInfo, 0, 0);
         tableLayoutPanelControl.Dock = DockStyle.Fill;
-        tableLayoutPanelControl.Location = new Point(427, 3);
+        tableLayoutPanelControl.Location = new Point(579, 3);
         tableLayoutPanelControl.Name = "tableLayoutPanelControl";
         tableLayoutPanelControl.RowCount = 2;
         tableLayoutPanelControl.RowStyles.Add(new RowStyle(SizeType.Percent, 92.5F));
         tableLayoutPanelControl.RowStyles.Add(new RowStyle(SizeType.Absolute, 40F));
-        tableLayoutPanelControl.Size = new Size(419, 520);
+        tableLayoutPanelControl.Size = new Size(571, 579);
         tableLayoutPanelControl.TabIndex = 1;
         // 
         // btnClose
         // 
         btnClose.Dock = DockStyle.Right;
-        btnClose.Location = new Point(322, 483);
+        btnClose.Location = new Point(474, 542);
         btnClose.Name = "btnClose";
         btnClose.Size = new Size(94, 34);
         btnClose.TabIndex = 0;
@@ -214,7 +214,7 @@ partial class ImageEqualizerMainForm
         tableLayoutPanelIntermediateInfo.RowCount = 2;
         tableLayoutPanelIntermediateInfo.RowStyles.Add(new RowStyle(SizeType.Absolute, 150F));
         tableLayoutPanelIntermediateInfo.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-        tableLayoutPanelIntermediateInfo.Size = new Size(413, 474);
+        tableLayoutPanelIntermediateInfo.Size = new Size(565, 533);
         tableLayoutPanelIntermediateInfo.TabIndex = 1;
         // 
         // groupBoxInfo
@@ -223,7 +223,7 @@ partial class ImageEqualizerMainForm
         groupBoxInfo.Dock = DockStyle.Fill;
         groupBoxInfo.Location = new Point(3, 3);
         groupBoxInfo.Name = "groupBoxInfo";
-        groupBoxInfo.Size = new Size(407, 144);
+        groupBoxInfo.Size = new Size(559, 144);
         groupBoxInfo.TabIndex = 0;
         groupBoxInfo.TabStop = false;
         groupBoxInfo.Text = "Info";
@@ -242,7 +242,7 @@ partial class ImageEqualizerMainForm
         tableLayoutPanelInfo.RowCount = 2;
         tableLayoutPanelInfo.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
         tableLayoutPanelInfo.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-        tableLayoutPanelInfo.Size = new Size(401, 118);
+        tableLayoutPanelInfo.Size = new Size(553, 118);
         tableLayoutPanelInfo.TabIndex = 0;
         // 
         // lblAngleDeviationDegreesText
@@ -251,7 +251,7 @@ partial class ImageEqualizerMainForm
         lblAngleDeviationDegreesText.Dock = DockStyle.Fill;
         lblAngleDeviationDegreesText.Location = new Point(4, 1);
         lblAngleDeviationDegreesText.Name = "lblAngleDeviationDegreesText";
-        lblAngleDeviationDegreesText.Size = new Size(193, 57);
+        lblAngleDeviationDegreesText.Size = new Size(269, 57);
         lblAngleDeviationDegreesText.TabIndex = 0;
         lblAngleDeviationDegreesText.Text = "Deviation angle (degrees)";
         lblAngleDeviationDegreesText.TextAlign = ContentAlignment.MiddleCenter;
@@ -260,9 +260,9 @@ partial class ImageEqualizerMainForm
         // 
         lblAngleDeviationDegreesValue.AutoSize = true;
         lblAngleDeviationDegreesValue.Dock = DockStyle.Fill;
-        lblAngleDeviationDegreesValue.Location = new Point(204, 1);
+        lblAngleDeviationDegreesValue.Location = new Point(280, 1);
         lblAngleDeviationDegreesValue.Name = "lblAngleDeviationDegreesValue";
-        lblAngleDeviationDegreesValue.Size = new Size(193, 57);
+        lblAngleDeviationDegreesValue.Size = new Size(269, 57);
         lblAngleDeviationDegreesValue.TabIndex = 1;
         lblAngleDeviationDegreesValue.Text = "0";
         lblAngleDeviationDegreesValue.TextAlign = ContentAlignment.MiddleCenter;
@@ -273,7 +273,7 @@ partial class ImageEqualizerMainForm
         groupBoxIntermediateImages.Dock = DockStyle.Fill;
         groupBoxIntermediateImages.Location = new Point(3, 153);
         groupBoxIntermediateImages.Name = "groupBoxIntermediateImages";
-        groupBoxIntermediateImages.Size = new Size(407, 318);
+        groupBoxIntermediateImages.Size = new Size(559, 377);
         groupBoxIntermediateImages.TabIndex = 1;
         groupBoxIntermediateImages.TabStop = false;
         groupBoxIntermediateImages.Text = "Intermediate images";
@@ -292,7 +292,7 @@ partial class ImageEqualizerMainForm
         tableLayoutPanelProcessedImages.RowCount = 2;
         tableLayoutPanelProcessedImages.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
         tableLayoutPanelProcessedImages.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-        tableLayoutPanelProcessedImages.Size = new Size(401, 292);
+        tableLayoutPanelProcessedImages.Size = new Size(553, 351);
         tableLayoutPanelProcessedImages.TabIndex = 0;
         // 
         // groupBoxFilteredImage
@@ -301,7 +301,7 @@ partial class ImageEqualizerMainForm
         groupBoxFilteredImage.Dock = DockStyle.Fill;
         groupBoxFilteredImage.Location = new Point(3, 3);
         groupBoxFilteredImage.Name = "groupBoxFilteredImage";
-        groupBoxFilteredImage.Size = new Size(194, 140);
+        groupBoxFilteredImage.Size = new Size(270, 169);
         groupBoxFilteredImage.TabIndex = 0;
         groupBoxFilteredImage.TabStop = false;
         groupBoxFilteredImage.Text = "Filter";
@@ -312,7 +312,7 @@ partial class ImageEqualizerMainForm
         pictureBoxFilteredImg.Dock = DockStyle.Fill;
         pictureBoxFilteredImg.Location = new Point(3, 23);
         pictureBoxFilteredImg.Name = "pictureBoxFilteredImg";
-        pictureBoxFilteredImg.Size = new Size(188, 114);
+        pictureBoxFilteredImg.Size = new Size(264, 143);
         pictureBoxFilteredImg.SizeMode = PictureBoxSizeMode.Zoom;
         pictureBoxFilteredImg.TabIndex = 0;
         pictureBoxFilteredImg.TabStop = false;
@@ -321,9 +321,9 @@ partial class ImageEqualizerMainForm
         // 
         groupBoxBinaryImg.Controls.Add(pictureBoxBinary);
         groupBoxBinaryImg.Dock = DockStyle.Fill;
-        groupBoxBinaryImg.Location = new Point(203, 3);
+        groupBoxBinaryImg.Location = new Point(279, 3);
         groupBoxBinaryImg.Name = "groupBoxBinaryImg";
-        groupBoxBinaryImg.Size = new Size(195, 140);
+        groupBoxBinaryImg.Size = new Size(271, 169);
         groupBoxBinaryImg.TabIndex = 1;
         groupBoxBinaryImg.TabStop = false;
         groupBoxBinaryImg.Text = "Binary";
@@ -334,7 +334,7 @@ partial class ImageEqualizerMainForm
         pictureBoxBinary.Dock = DockStyle.Fill;
         pictureBoxBinary.Location = new Point(3, 23);
         pictureBoxBinary.Name = "pictureBoxBinary";
-        pictureBoxBinary.Size = new Size(189, 114);
+        pictureBoxBinary.Size = new Size(265, 143);
         pictureBoxBinary.SizeMode = PictureBoxSizeMode.Zoom;
         pictureBoxBinary.TabIndex = 0;
         pictureBoxBinary.TabStop = false;
@@ -343,9 +343,9 @@ partial class ImageEqualizerMainForm
         // 
         groupBoxExtractedRect.Controls.Add(pictureBoxROI);
         groupBoxExtractedRect.Dock = DockStyle.Fill;
-        groupBoxExtractedRect.Location = new Point(3, 149);
+        groupBoxExtractedRect.Location = new Point(3, 178);
         groupBoxExtractedRect.Name = "groupBoxExtractedRect";
-        groupBoxExtractedRect.Size = new Size(194, 140);
+        groupBoxExtractedRect.Size = new Size(270, 170);
         groupBoxExtractedRect.TabIndex = 2;
         groupBoxExtractedRect.TabStop = false;
         groupBoxExtractedRect.Text = "Extracted ROI";
@@ -356,7 +356,7 @@ partial class ImageEqualizerMainForm
         pictureBoxROI.Dock = DockStyle.Fill;
         pictureBoxROI.Location = new Point(3, 23);
         pictureBoxROI.Name = "pictureBoxROI";
-        pictureBoxROI.Size = new Size(188, 114);
+        pictureBoxROI.Size = new Size(264, 144);
         pictureBoxROI.SizeMode = PictureBoxSizeMode.Zoom;
         pictureBoxROI.TabIndex = 0;
         pictureBoxROI.TabStop = false;
@@ -365,7 +365,7 @@ partial class ImageEqualizerMainForm
         // 
         AutoScaleDimensions = new SizeF(8F, 20F);
         AutoScaleMode = AutoScaleMode.Font;
-        ClientSize = new Size(849, 554);
+        ClientSize = new Size(1153, 613);
         Controls.Add(tableLayoutPanelMain);
         Controls.Add(menuStrip);
         MainMenuStrip = menuStrip;

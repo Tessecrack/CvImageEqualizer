@@ -56,7 +56,9 @@ namespace CvImageEqualizer.Core.Equalizers
             // получение прямоугольника (по контуру), по которому будет определен угол поворота
             var minAreaRect = ExtracMinAreaRect(binaryMat);
 
-            var rotatedMat = ApplyRotation(_cachedMat, minAreaRect, out Mat roi, out float optimalAngle);
+            // проецируем угол на первую четверть
+            var angleInFirstQuarter = ConvertAngleToFirstQuarter(minAreaRect.Angle);
+            var rotatedMat = ApplyRotation(_cachedMat, minAreaRect, angleInFirstQuarter, out Mat roi);
 
             var extractedRoi = new Mat();
 
@@ -66,7 +68,7 @@ namespace CvImageEqualizer.Core.Equalizers
             result.FilteredImage = filteredMat;
             result.BinaryImage = binaryMat;
             result.ExtractedROI = extractedRoi;
-            result.AngleDeviationDegrees = optimalAngle;
+            result.AngleDeviationDegrees = angleInFirstQuarter;
             return result;
         }
 
@@ -149,21 +151,17 @@ namespace CvImageEqualizer.Core.Equalizers
         /// <param name="maskRoi">(Выходной) Область интереса, наложенная на черный фон.</param>
         /// <param name="optimalAngle">(Выходной) Угол спроецированный на первую четверть.</param>
         /// <returns>Повернутое изображение.</returns>
-        private Mat ApplyRotation(Mat srcMat, RotatedRect minAreaRect,
-            out Mat maskRoi,
-            out float optimalAngle)
+        private Mat ApplyRotation(Mat srcMat, RotatedRect minAreaRect, float angleInFirstQuarter,
+            out Mat maskRoi)
         {
             maskRoi = Mat.Zeros(srcMat.Rows, srcMat.Cols, DepthType.Cv8U, 1);
-
-            // проецируем угол на первую четверть
-            optimalAngle = ConvertAngleToFirstQuarter(minAreaRect.Angle);
 
             CvInvoke.Rectangle(maskRoi, minAreaRect.MinAreaRect(), new MCvScalar(255), -1);
 
             var rotatedResult = new Mat();
-            var rotationMatrix = new Mat(new Size(3, 3), DepthType.Cv32F, 1);
+            var rotationMatrix = new Mat(new Size(2, 3), DepthType.Cv32F, 1);
 
-            CvInvoke.GetRotationMatrix2D(minAreaRect.Center, optimalAngle, 1.0, rotationMatrix);
+            CvInvoke.GetRotationMatrix2D(minAreaRect.Center, angleInFirstQuarter, 1.0, rotationMatrix);
             CvInvoke.WarpAffine(srcMat, rotatedResult, rotationMatrix, srcMat.Size,
                 Inter.Cubic, Warp.Default, BorderType.Replicate);
 
@@ -178,22 +176,16 @@ namespace CvImageEqualizer.Core.Equalizers
         private float ConvertAngleToFirstQuarter(float srcAngle)
         {
             int roundAngle = (int)srcAngle;
-            var resultAngle = srcAngle;
-            if (roundAngle == 90 || roundAngle == 180 || roundAngle == 270)
+            int currentQuarter = roundAngle / 45;
+            float convertedAngleToFirstQuarter = srcAngle - currentQuarter * 90;
+
+            // проверка на переворот изображения относительно 90, 180, 270 градусов
+            // ("флип" изображения не нужен)
+            if (Math.Abs((int)convertedAngleToFirstQuarter) == 90)
             {
-                // не учитываем флипы
                 return 0;
             }
-            float rightAngle = 90;
-            float range = 45;
-
-            // условный перевод угла в первую четверть
-            if (rightAngle + range >= roundAngle && rightAngle - range <= roundAngle)
-            {
-                resultAngle = srcAngle - rightAngle;
-            }
-
-            return resultAngle;
+            return convertedAngleToFirstQuarter;
         }
     }
 }
